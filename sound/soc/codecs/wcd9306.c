@@ -4416,7 +4416,8 @@ static const struct tapan_reg_mask_val tapan_1_0_reg_defaults[] = {
 	/* Close leakage on the spkdrv */
 	TAPAN_REG_VAL(TAPAN_A_SPKR_DRV_DBG_PWRSTG, 0x24),
 
-	TAPAN_REG_VAL(TAPAN_A_SPKR_DRV_DBG_DAC, 0xE5),        TAPAN_REG_VAL(TAPAN_A_CDC_COMP0_B5_CTL, 0x7f),
+	TAPAN_REG_VAL(TAPAN_A_SPKR_DRV_DBG_DAC, 0xE5),
+        TAPAN_REG_VAL(TAPAN_A_CDC_COMP0_B5_CTL, 0x7f),
 
 };
 
@@ -4521,6 +4522,11 @@ static void tapan_codec_init_reg(struct snd_soc_codec *codec)
 
 static struct wcd9xxx_reg_address tapan_reg_address = {
 };
+
+#ifdef CONFIG_SOUND_CONTROL_HAX_GPL
+struct snd_kcontrol_new *gpl_faux_snd_controls_ptr =
+	(struct snd_kcontrol_new *)tapan_snd_controls;
+#endif
 
 static int tapan_codec_probe(struct snd_soc_codec *codec)
 {
