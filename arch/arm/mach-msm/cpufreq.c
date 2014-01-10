@@ -32,6 +32,10 @@
 
 #include "acpuclock.h"
 
+#ifdef CONFIG_CPUFREQ_HARDLIMIT
+#include <linux/cpufreq_hardlimit.h>
+#endif
+
 struct cpufreq_work_struct {
 	struct work_struct work;
 	struct cpufreq_policy *policy;
@@ -59,6 +63,57 @@ struct cpu_freq {
 };
 
 static DEFINE_PER_CPU(struct cpu_freq, cpu_freq_info);
+
+#ifdef CONFIG_SEC_DVFS
+static unsigned int upper_limit_freq;
+static unsigned int lower_limit_freq;
+static unsigned int cpuinfo_max_freq;
+static unsigned int cpuinfo_min_freq;
+
+unsigned int get_min_lock(void)
+{
+	return lower_limit_freq;
+}
+
+unsigned int get_max_lock(void)
+{
+	return upper_limit_freq;
+}
+
+void set_min_lock(int freq)
+{
+	if (freq <= MIN_FREQ_LIMIT)
+		lower_limit_freq = 0;
+	else if (freq > MAX_FREQ_LIMIT)
+		lower_limit_freq = 0;
+	else
+		lower_limit_freq = freq;
+}
+
+void set_max_lock(int freq)
+{
+	if (freq < MIN_FREQ_LIMIT)
+		upper_limit_freq = 0;
+	else if (freq >= MAX_FREQ_LIMIT)
+		upper_limit_freq = 0;
+	else
+		upper_limit_freq = freq;
+}
+
+int get_max_freq(void)
+{
+#ifdef CONFIG_CPUFREQ_HARDLIMIT
+	return check_cpufreq_hardlimit(cpuinfo_max_freq); /* Yank555.lu : Enforce hardlimit */
+#else
+	return cpuinfo_max_freq;
+#endif
+}
+
+int get_min_freq(void)
+{
+	return cpuinfo_min_freq;
+}
+#endif
 
 static int set_cpu_freq(struct cpufreq_policy *policy, unsigned int new_freq)
 {
