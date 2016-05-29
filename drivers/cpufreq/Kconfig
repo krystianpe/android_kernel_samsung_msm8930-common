@@ -162,12 +162,6 @@ config CPU_FREQ_DEFAULT_GOV_LIONHEART
 	help
 	  Use the CPUFreq governor 'Lionheart' as default.
 
-config CPU_FREQ_DEFAULT_GOV_SMARTASSH3
-	bool "smartassH3"
-	select CPU_FREQ_GOV_SMARTASSH3
- 	help
-	  Use the CPUFreq governor 'smartassH3' as default.
-
 config CPU_FREQ_DEFAULT_GOV_INTELLIDEMAND
 	bool "intellidemand"
 	select CPU_FREQ_GOV_INTELLIDEMAND
@@ -337,14 +331,6 @@ config CPU_FREQ_GOV_INTELLIMM
           For details, take a look at linux/Documentation/cpu-freq.
 
           If in doubt, say N.
-
-config CPU_FREQ_GOV_SMARTASSH3
-	tristate "'smartassH3' cpufreq governor"
- 	depends on CPU_FREQ
- 	help
-	  'smartassH3' - a "smart" governor
-
-	  If in doubt, say N.
 
 config CPU_FREQ_GOV_INTELLIDEMAND
         tristate "'intellidemand' cpufreq policy governor"
