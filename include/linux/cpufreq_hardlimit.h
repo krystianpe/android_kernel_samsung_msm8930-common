@@ -19,7 +19,7 @@
 
 extern unsigned int cpufreq_hardlimit;
 
-#define CPUFREQ_HARDLIMIT_STOCK 1728000	/* default */
+#define CPUFREQ_HARDLIMIT_STOCK 2052000	/* default */
 
 unsigned int check_cpufreq_hardlimit(unsigned int freq);
 
